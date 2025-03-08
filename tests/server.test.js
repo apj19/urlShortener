@@ -30,7 +30,7 @@ describe("Should return shortcode", () => {
 
 describe("Should redirect with 200 for netflix", () => {
     test("GET /redirect?code={code} should return 200", async () => {
-      const response = await request(app).get("/redirect?code=testfb");
+      const response = await request(app).get("/redirect?code=2jGt_yy0");
       expect(response.status).toBe(302);
     //   expect(response.body).toHaveProperty("message", "Server is running");
     });
