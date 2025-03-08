@@ -66,3 +66,4 @@ module.exports.generateShortUrl = async (req, res) => {
     res.status(500).json({ message: "Error fetching URL", error });
   }
 };
+
