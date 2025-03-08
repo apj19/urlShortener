@@ -21,7 +21,7 @@ describe("Check server health", () => {
 
 describe("Check Short Code Genaration", () => {
     test("Post /shorten should return Status 201", async () => {
-      const response = await request(app).post("/shorten").send({"longUrl":`${nanoid(8)}`});
+      const response = await request(app).post("/shorten").send({"longUrl":`test${nanoid(8)}`});
        expect(response.status).toBe(201);
     
     });
@@ -43,7 +43,7 @@ describe("Should delete the intial Shortcode", () => {
   //creating simple shortcode to delete in 
   let currentShortCode=''
   test("Post /shorten For Delete create new Code", async () => {
-    const createRes = await request(app).post("/shorten").send({"longUrl":`www.${nanoid(8)}`});
+    const createRes = await request(app).post("/shorten").send({"longUrl":`test${nanoid(8)}`});
      expect(createRes.status).toBe(201);
      currentShortCode=createRes.body.shortcode;
   });

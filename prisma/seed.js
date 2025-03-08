@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.urlShortener.createMany({
+  await prisma.urlshortener.createMany({
     data: [
       { longUrl: "https://www.google.com/", ShortUrl: "testg" },
       { longUrl: "https://www.facebook.com/", ShortUrl: "testfb" },

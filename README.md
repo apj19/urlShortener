@@ -41,3 +41,7 @@ it will give 404 error
 
 q9
 delete request on /shorten
+
+# Modification
+
+npx prisma db seed
