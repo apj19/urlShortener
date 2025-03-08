@@ -4,8 +4,9 @@ import { check, sleep,group } from "k6";
 
 export let options = {
   stages: [
-    { duration: "10s", target: 100 }, // Ramp up to 10 users in 10 seconds
+    { duration: "30s", target: 1000 }, // Ramp up to 10 users in 10 seconds
   ],
+  summaryTrendStats: ['avg', 'med', 'p(50)', 'p(90)', 'p(95)', 'p(99)']
 };
 
 

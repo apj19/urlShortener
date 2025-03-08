@@ -6,6 +6,7 @@ async function main() {
     data: [
       { longUrl: "https://www.google.com/", ShortUrl: "testg" },
       { longUrl: "https://www.facebook.com/", ShortUrl: "testfb" },
+      { longUrl: "https://www.facebook.comsaf/", ShortUrl: "deletecode" },
     ],
   });
 

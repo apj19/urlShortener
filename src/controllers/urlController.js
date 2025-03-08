@@ -67,3 +67,42 @@ module.exports.generateShortUrl = async (req, res) => {
   }
 };
 
+
+
+module.exports.deleteShortUrl = async (req, res) => {
+  try {
+    let inputshortcode=req.body.shortCode;
+    if(!inputshortcode){
+            return res.status(400).send({
+              success: 'false',
+              message: 'ShortCode requried'
+            });
+    }
+    //check if that url existe in our system
+
+    const existsUrl = await prisma.urlShortener.findUnique({
+      where: {ShortUrl:inputshortcode},
+    });
+
+    if (existsUrl) {
+      const deletedcode = await prisma.urlShortener.delete({
+        where: {
+          id: existsUrl.id, 
+        },
+      });
+      
+      return res.status(200).json({ message: "ShortCode Deleted!!" });
+    }else{
+      
+      return res.status(404).json({ message: "ShortCode not found" });
+
+    }
+
+    
+
+    
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching URL", error });
+  }
+};
+

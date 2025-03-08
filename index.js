@@ -15,7 +15,6 @@ const redirtRoute=require("./src/routes/redirectRoutes");
 app.use('/redirect',redirtRoute);
 
 
-
 const server=app.listen(PORT, () => {
     console.log(`Server running at: http://localhost:${PORT}/`);
 });
