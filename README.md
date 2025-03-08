@@ -1,15 +1,14 @@
 # URL Shortener
 
 ## Project Setup
-1. TO install dependencies Run ```npm i```
+
+1. To install dependencies, move to folder and Run `npm i`
 2. To setup local Sqllit Run
- ```npx prisma migrate dev --name init ```
-3. To test api helth run ```npm test ```
-4. To start server Run ``` npm start```
-To run load test please instat k6 on your systme
-the run ```k6 run loadTest\simpletest.js ```
-
-
+   `npx prisma migrate dev --name init `
+3. To test api helth run `npm test `
+4. To start server Run ` npm start`
+5. To run load test please instat k6 on your systme
+   the run `k6 run loadTest\simpletest.js `
 
 # load test Results
 
