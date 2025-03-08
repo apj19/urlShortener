@@ -45,3 +45,21 @@ delete request on /shorten
 # Modification
 
 npx prisma db seed
+# A2
+## Q1. 
+adding index on create date column so frquent fetching will be fast;
+```
+select longurl from urlshortener
+order by created_at desc
+limit 10;
+
+```
+## Q2. 
+it should return 404 error, test case added
+
+## Q3.
+```
+select * from urlshortener
+order by counter desc,last_accessed_at desc
+limit 10;
+```

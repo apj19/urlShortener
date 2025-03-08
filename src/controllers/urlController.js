@@ -13,14 +13,25 @@ module.exports.getUrl = async (req, res) => {
     }
 
     const url = await prisma.urlshortener.findUnique({
-      where: { ShortUrl:shortCode },
+      where: { shorturl:shortCode },
     });
 
     if (!url) {
       return res.status(404).json({ message: "URL not found" });
     }
+    //ading counter and last access date
+    // console.log(url.id);
+    const add=await prisma.urlshortener.update({
+      where:{id:url.id},
+      data:{
+        counter:{
+          increment:1
+        },
+        last_accessed_at: new Date()
+      }
+    });
 
-    res.redirect(url.longUrl);
+    res.redirect(url.longurl);
 
 
   } catch (error) {
@@ -41,17 +52,17 @@ module.exports.generateShortUrl = async (req, res) => {
     //check if that url existe in our system
 
     const existsUrl = await prisma.urlshortener.findUnique({
-      where: { longUrl: inputLongUrl},
+      where: { longurl: inputLongUrl},
     });
 
     if (existsUrl) {
-      return res.status(200).json({ shortcode: existsUrl.ShortUrl });
+      return res.status(200).json({ shortcode: existsUrl.shorturl });
     }else{
       const newShortCode=nanoid(8);
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
-          longUrl:inputLongUrl,
-          ShortUrl:newShortCode
+          longurl:inputLongUrl,
+          shorturl:newShortCode
         }
       });
 
@@ -81,7 +92,7 @@ module.exports.deleteShortUrl = async (req, res) => {
     //check if that url existe in our system
 
     const existsUrl = await prisma.urlshortener.findUnique({
-      where: {ShortUrl:inputshortcode},
+      where: {shorturl:inputshortcode},
     });
 
     if (existsUrl) {

@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.urlshortener.createMany({
     data: [
-      { longUrl: "https://www.google.com/", ShortUrl: "testg" },
-      { longUrl: "https://www.facebook.com/", ShortUrl: "testfb" },
-      { longUrl: "https://www.facebook.comsaf/", ShortUrl: "deletecode" },
+      { longurl: "https://www.google.com/", shorturl: "testg" },
+      { longurl: "https://www.facebook.com/", shorturl: "testfb" },
+      { longurl: "https://www.facebook.comsaf/", shorturl: "deletecode" },
     ],
   });
 

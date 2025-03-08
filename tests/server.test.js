@@ -56,3 +56,13 @@ describe("Should delete the intial Shortcode", () => {
 
 
 });
+
+//adding test to check if empty url send it should resturn 400
+
+describe("Check Short Code with empty url", () => {
+  test("Post /shorten should return Status 400 bad request", async () => {
+    const response = await request(app).post("/shorten").send({"longUrl":``});
+     expect(response.status).toBe(400);
+  
+  });
+});

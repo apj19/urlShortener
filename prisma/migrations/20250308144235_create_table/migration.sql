@@ -13,3 +13,6 @@ CREATE UNIQUE INDEX "urlshortener_longUrl_key" ON "urlshortener"("longUrl");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "urlshortener_ShortUrl_key" ON "urlshortener"("ShortUrl");
+
+-- CreateIndex
+CREATE INDEX "urlshortener_created_at_idx" ON "urlshortener"("created_at");
