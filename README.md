@@ -63,3 +63,11 @@ select * from urlshortener
 order by counter desc,last_accessed_at desc
 limit 10;
 ```
+
+## Q4.
+```
+select longurl, count(shorturl) as cnt from urlshortener
+group by longurl
+order by cnt desc
+limit 10;
+```

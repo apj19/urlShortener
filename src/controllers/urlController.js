@@ -51,13 +51,13 @@ module.exports.generateShortUrl = async (req, res) => {
     }
     //check if that url existe in our system
 
-    const existsUrl = await prisma.urlshortener.findUnique({
-      where: { longurl: inputLongUrl},
-    });
+    // const existsUrl = await prisma.urlshortener.findUnique({
+    //   where: { longurl: inputLongUrl},
+    // });
 
-    if (existsUrl) {
-      return res.status(200).json({ shortcode: existsUrl.shorturl });
-    }else{
+    // if (existsUrl) {
+    //   return res.status(200).json({ shortcode: existsUrl.shorturl });
+    // }else{
       const newShortCode=nanoid(8);
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
@@ -68,7 +68,7 @@ module.exports.generateShortUrl = async (req, res) => {
 
       return res.status(201).json({ shortcode: newShortCode });
 
-    }
+    // }
 
     
 

@@ -17,7 +17,7 @@ datasource db {
 
 model urlshortener {
   id         Int      @id @default(autoincrement())
-  longurl    String   @unique
+  longurl    String   
   shorturl   String   @unique
   created_at DateTime @default(now())
   counter    Int  @default(0)

@@ -66,3 +66,26 @@ describe("Check Short Code with empty url", () => {
   
   });
 });
+
+//allow duplicate urls to be shortrnead
+//create one url add it get short code
+//create amsurl add it get shortcode
+//both should be different
+
+describe("Allow mutiple shrt code Generation", () => {
+  const newUrl=`test${nanoid(8)}`;
+  let firstShortCode='';
+  test("Post /shorten should return Status 201", async () => {
+    const response = await request(app).post("/shorten").send({"longUrl":newUrl});
+     expect(response.status).toBe(201);
+     firstShortCode=response.body.shortcode;
+  });
+
+  test("Post /shorten should return Status 201", async () => {
+    const response = await request(app).post("/shorten").send({"longUrl":newUrl});
+     expect(response.status).toBe(201);
+     expect(response.body.shortcode).not.toBe(firstShortCode);
+  });
+
+
+});
