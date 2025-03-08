@@ -9,6 +9,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model UrlShortener {
+  id         Int      @id @default(autoincrement())
+  longUrl    String   @unique
+  ShortUrl   String   @unique
+  created_at DateTime @default(now())
 }
