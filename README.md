@@ -43,9 +43,10 @@ q9
 delete request on /shorten
 
 # Modification
-
+## A2
+ ###  branch-- main 
 npx prisma db seed
-# A2
+
 ## Q1. 
 adding index on create date column so frquent fetching will be fast;
 ```
