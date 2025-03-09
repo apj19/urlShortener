@@ -2,6 +2,8 @@
 
 ## Project Setup
 
+Use branch -- branchA2
+
 1. To install dependencies, move to folder and Run `npm i`
 2. To setup local Sqllit Run
    `npx prisma migrate dev --name init `
