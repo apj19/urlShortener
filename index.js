@@ -8,13 +8,14 @@ app.use(bodyParser.json());
 const PORT = 3000;
 
 const bascicRoute=require("./src/routes/basicRoutes");
-app.use('/',authMiddleware,bascicRoute);
+app.use('/health',authMiddleware,bascicRoute);
 
 const shortenRoute=require("./src/routes/shortenRoutes1");
-app.use('/shorten',shortenRoute);
+app.use('/shorten',authMiddleware,shortenRoute);
 
 const redirtRoute=require("./src/routes/redirectRoutes");
 app.use('/redirect',redirtRoute);
+
 
 
 const server=app.listen(PORT, () => {

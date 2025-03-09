@@ -49,6 +49,15 @@ module.exports.generateShortUrl = async (req, res) => {
               message: 'longurl requried'
             });
     }
+    //request will come here only if apikey exists
+    const userApiKey = req.headers["authorization"]?.split("Bearer ")[1];
+    const checkApiKeyRes= await prisma.users.findUnique({
+      where:{api_key:userApiKey}
+    });
+    const userid=checkApiKeyRes.id;
+
+    //get the uerid
+
     //check if that url existe in our system
 
     // const existsUrl = await prisma.urlshortener.findUnique({
@@ -62,7 +71,8 @@ module.exports.generateShortUrl = async (req, res) => {
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
           longurl:inputLongUrl,
-          shorturl:newShortCode
+          shorturl:newShortCode,
+          user_id:userid
         }
       });
 

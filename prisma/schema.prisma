@@ -22,6 +22,8 @@ model urlshortener {
   created_at DateTime @default(now())
   counter    Int  @default(0)
   last_accessed_at DateTime @default(now())
+  user_id    Int  
+  user    users     @relation(fields: [user_id], references: [id])
 
   @@index([created_at]) 
 }
@@ -31,5 +33,6 @@ model users{
   email   String   @unique
   name   String?
   api_key  String  @unique
+  urls urlshortener[]
 }
 
