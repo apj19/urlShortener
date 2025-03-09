@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 
-module.exports.authMiddleware = async function(req, res, next){
+module.exports.authMiddleware = async function(req , res, next){
     const userApiKey = req.headers["authorization"]?.split("Bearer ")[1];
 
     if(!userApiKey){
@@ -15,6 +15,8 @@ module.exports.authMiddleware = async function(req, res, next){
       });
 
       if(checkApiKeyRes){
+        //send userid to controller
+        req.userIdFromAuth=checkApiKeyRes.id;
         next(); 
       }else{
         return res.status(401).json({ message: "Unauthorized!!!!" });

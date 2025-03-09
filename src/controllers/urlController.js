@@ -50,29 +50,13 @@ module.exports.generateShortUrl = async (req, res) => {
             });
     }
     //request will come here only if apikey exists
-    const userApiKey = req.headers["authorization"]?.split("Bearer ")[1];
-    const checkApiKeyRes= await prisma.users.findUnique({
-      where:{api_key:userApiKey}
-    });
-    const userid=checkApiKeyRes.id;
-
-    //get the uerid
-
-    //check if that url existe in our system
-
-    // const existsUrl = await prisma.urlshortener.findUnique({
-    //   where: { longurl: inputLongUrl},
-    // });
-
-    // if (existsUrl) {
-    //   return res.status(200).json({ shortcode: existsUrl.shorturl });
-    // }else{
+    
       const newShortCode=nanoid(8);
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
           longurl:inputLongUrl,
           shorturl:newShortCode,
-          user_id:userid
+          user_id:req.userIdFromAuth
         }
       });
 
@@ -102,26 +86,26 @@ module.exports.deleteShortUrl = async (req, res) => {
     //check if that url existe in our system
 
     const existsUrl = await prisma.urlshortener.findUnique({
-      where: {shorturl:inputshortcode},
+      where: {shorturl:inputshortcode,
+        user_id:req.userIdFromAuth},
     });
+    // console.log(existsUrl);
+    if(!existsUrl || existsUrl.isdeleted){
+      return res.status(404).json({ message: "ShortCode not found here" });
+    }
+  
 
-    if (existsUrl) {
-      const deletedcode = await prisma.urlshortener.delete({
+      const deletedcode = await prisma.urlshortener.update({
         where: {
           id: existsUrl.id, 
         },
+        data:{
+          isdeleted:true
+        },
       });
-      
+
       return res.status(200).json({ message: "ShortCode Deleted!!" });
-    }else{
-      
-      return res.status(404).json({ message: "ShortCode not found" });
-
-    }
-
-    
-
-    
+ 
   } catch (error) {
     res.status(500).json({ message: "Error fetching URL", error });
   }
