@@ -72,6 +72,11 @@ group by longurl
 order by cnt desc
 limit 10;
 ```
-## Q5 done test remaing
+## Q5 done test remaing cases remaning
 ## Q6
 ## Q7
+
+## Q8 code done test remains
+
+## Q9 optional shortcode code done test remains
+

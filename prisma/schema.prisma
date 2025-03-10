@@ -24,6 +24,7 @@ model urlshortener {
   last_accessed_at DateTime @default(now())
   isdeleted   Boolean  @default(false)
   user_id    Int  
+  expiry_date DateTime?
   user    users     @relation(fields: [user_id], references: [id])
 
   @@index([created_at]) 

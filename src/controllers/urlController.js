@@ -19,6 +19,14 @@ module.exports.getUrl = async (req, res) => {
     if (!url) {
       return res.status(404).json({ message: "URL not found" });
     }
+
+    if (url.isdeleted) {
+      return res.status(404).json({ message: "URL not found" });
+    }
+
+    if (url.expiry_date && url.expiry_date <= Date.now()) {
+      return res.status(404).json({ message: "URL not found" });
+    }
     //ading counter and last access date
     // console.log(url.id);
     const add=await prisma.urlshortener.update({
@@ -42,21 +50,43 @@ module.exports.getUrl = async (req, res) => {
 
 module.exports.generateShortUrl = async (req, res) => {
   try {
+    //input body={
+    // "longUrl":"https://www.google.com/"--requried,
+    // "expiry":"2025-03-11"--optional
+    // "":""--optional
+    
+    // }
     let inputLongUrl=req.body.longUrl;
+    let inputExpiryDate=req.body.expiry;
+    let inputCustomeCode=req.body.customecode;
+
     if(!inputLongUrl){
-            return res.status(400).send({
-              success: 'false',
-              message: 'longurl requried'
-            });
+      return res.status(400).send({message: 'longurl requried'});
     }
+    //check customee code exist in db
+    let newShortCode=nanoid(8);
+    if(inputCustomeCode){
+
+      const url = await prisma.urlshortener.findUnique({
+        where: { shorturl:inputCustomeCode },
+      });
+
+      if(url){
+        return res.status(400).send({message: 'customer code exists!'});
+      }else{
+        newShortCode=inputCustomeCode;
+      }
+    }
+
     //request will come here only if apikey exists
     
-      const newShortCode=nanoid(8);
+      // const newShortCode=nanoid(8);
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
           longurl:inputLongUrl,
           shorturl:newShortCode,
-          user_id:req.userIdFromAuth
+          user_id:req.userIdFromAuth,
+          expiry_date: inputExpiryDate ? new Date(inputExpiryDate) : null
         }
       });
 
