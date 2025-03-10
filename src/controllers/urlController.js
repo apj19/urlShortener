@@ -103,6 +103,44 @@ module.exports.generateShortUrl = async (req, res) => {
 };
 
 
+module.exports.generateBulkShortUrl= async (req,res)=>{
+
+  //input body={
+    // "longUrls":[u1,u2,u3]--requried,
+   // }
+   let inputLongUrls=req.body.longUrls;
+ 
+    if(!inputLongUrls ){
+      return res.status(400).send({message: 'longurls requried'});
+    }
+
+    if( !Array.isArray(inputLongUrls)){
+      return res.status(400).send({message: 'longurls should be array'});
+    }
+
+  try {
+
+    let urlsData=[];
+
+    for(let i=0;i< inputLongUrls.length;i++){
+      urlsData.push({
+        longurl:inputLongUrls[i],
+        shorturl:nanoid(8),
+        user_id:req.userIdFromAuth,
+      })
+    }
+
+    console.log(urlsData);
+    const creatbulkUrls=await prisma.urlshortener.createMany({
+      data:urlsData
+    });
+    res.status(200).json({ message: "generated" });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching URL", error });
+  }
+
+};
+
 
 module.exports.deleteShortUrl = async (req, res) => {
   try {
