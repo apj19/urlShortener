@@ -130,7 +130,7 @@ module.exports.generateBulkShortUrl= async (req,res)=>{
       })
     }
 
-    console.log(urlsData);
+    // console.log(urlsData);
     const creatbulkUrls=await prisma.urlshortener.createMany({
       data:urlsData
     });
@@ -164,6 +164,43 @@ module.exports.deleteShortUrl = async (req, res) => {
   
 
       const deletedcode = await prisma.urlshortener.update({
+        where: {
+          id: existsUrl.id, 
+        },
+        data:{
+          isdeleted:true
+        },
+      });
+
+      return res.status(200).json({ message: "ShortCode Deleted!!" });
+ 
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching URL", error });
+  }
+};
+
+
+module.exports.updateExpiryDate = async (req, res) => {
+  try {
+    let inputshortcode=req.query.code;
+    if(!inputshortcode){
+            return res.status(400).send({
+              success: 'false',
+              message: 'ShortCode requried'
+            });
+    }
+ 
+    const existsUrl = await prisma.urlshortener.findUnique({
+      where: {shorturl:inputshortcode,
+        user_id:req.userIdFromAuth},
+    });
+
+    if(!existsUrl){
+      return res.status(404).json({ message: "ShortCode not found here" });
+    }
+  
+
+      const updateExpiry = await prisma.urlshortener.update({
         where: {
           id: existsUrl.id, 
         },

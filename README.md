@@ -80,3 +80,7 @@ limit 10;
 
 ## Q9 optional shortcode code done test remains
 
+## Q10 bulk endpoint done
+
+## Q11, Q12 Done  test remains
+

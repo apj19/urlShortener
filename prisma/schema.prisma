@@ -25,6 +25,7 @@ model urlshortener {
   isdeleted   Boolean  @default(false)
   user_id    Int  
   expiry_date DateTime?
+ 
   user    users     @relation(fields: [user_id], references: [id])
 
   @@index([created_at]) 
@@ -35,6 +36,12 @@ model users{
   email   String   @unique
   name   String?
   api_key  String  @unique
+  tier Tier @default(HOBBY)
   urls urlshortener[]
 }
 
+
+enum Tier {
+  HOBBY
+  ENTERTPRISE 
+}
