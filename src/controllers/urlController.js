@@ -180,14 +180,11 @@ module.exports.deleteShortUrl = async (req, res) => {
 };
 
 
-module.exports.updateExpiryDate = async (req, res) => {
+module.exports.updateShrtCodeFields = async (req, res) => {
   try {
-    let inputshortcode=req.query.code;
-    if(!inputshortcode){
-            return res.status(400).send({
-              success: 'false',
-              message: 'ShortCode requried'
-            });
+    let inputshortcode=req.params.shortcode;
+    if(!inputshortcode || !req. body){
+      return res.status(400).send({ message: 'ShortCode requried'});
     }
  
     const existsUrl = await prisma.urlshortener.findUnique({
@@ -198,18 +195,45 @@ module.exports.updateExpiryDate = async (req, res) => {
     if(!existsUrl){
       return res.status(404).json({ message: "ShortCode not found here" });
     }
-  
 
+    if(new Date(req.body.expiryDate)){
+      return res.status(400).send({ message: 'Date format is yyyy-mm-dd'});
+    }
+
+    if(req.body.expiryDate){
       const updateExpiry = await prisma.urlshortener.update({
         where: {
           id: existsUrl.id, 
         },
         data:{
-          isdeleted:true
+          expiry_date:new Date(req.body.expiryDate),
+          isdeleted:false
         },
       });
+    }
 
-      return res.status(200).json({ message: "ShortCode Deleted!!" });
+    if(req.body.expiryDate){
+      const updateExpiry = await prisma.urlshortener.update({
+        where: {
+          id: existsUrl.id, 
+        },
+        data:{
+          expiry_date:new Date(req.body.expiryDate),
+          isdeleted:false
+        },
+      });
+    }
+  
+    // const updateExpiry = await prisma.urlshortener.update({
+    //     where: {
+    //       id: existsUrl.id, 
+    //     },
+    //     data:{
+    //       isdeleted:true
+    //     },
+    // });
+
+    return res.status(201).json({ message: "ShortCode Updated" });
  
   } catch (error) {
     res.status(500).json({ message: "Error fetching URL", error });
