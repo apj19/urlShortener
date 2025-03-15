@@ -25,6 +25,7 @@ model urlshortener {
   isdeleted   Boolean  @default(false)
   user_id    Int  
   expiry_date DateTime?
+  password String?
  
   user    users     @relation(fields: [user_id], references: [id])
 
