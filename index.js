@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const PORT = 3000;
 
 const bascicRoute=require("./src/routes/basicRoutes");
-app.use('/health',authMiddleware,bascicRoute);
+app.use('/health',bascicRoute);
 
 const shortenRoute=require("./src/routes/shortenRoutes1");
 app.use('/shorten',authMiddleware,shortenRoute);

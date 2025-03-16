@@ -2,7 +2,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { nanoid } = require("nanoid");
 
-const {z}= require("zod")
+const {z}= require("zod");
+
+
+const {createShortCodeSchema}=require("../zodschemas/createShorturl")
+
 module.exports.getUrl = async (req, res) => {
   try {
     let shortCode=req.query.code;
@@ -60,19 +64,26 @@ module.exports.getUrl = async (req, res) => {
 module.exports.generateShortUrl = async (req, res) => {
   try {
     //input body={
-    // "longUrl":"https://www.google.com/"--requried,
-    // "expiry":"2025-03-11"--optional
-    // "":""--optional
-    
+    // "longUrl":--requried,
+    // "expiry":--optional
+    // "customerCode":""--optional
+    //"password":""--optional
     // }
+    //validating body parameters
+    const inputValidation=createShortCodeSchema.safeParse(req.body);
+
+    if(!inputValidation.success){
+      return res.status(400).send({message: 'Bad Input!!Please check documentaion'});
+    }
+
     let inputLongUrl=req.body.longUrl;
     let inputExpiryDate=req.body.expiry;
     let inputCustomeCode=req.body.customecode;
     let inputpassword=req.body.password;
 
-    if(!inputLongUrl){
-      return res.status(400).send({message: 'longurl requried'});
-    }
+    // if(!inputLongUrl){
+    //   return res.status(400).send({message: 'longurl requried'});
+    // }
     //check customee code exist in db
     let newShortCode=nanoid(8);
     if(inputCustomeCode){
@@ -83,11 +94,11 @@ module.exports.generateShortUrl = async (req, res) => {
 
       if(url){
         return res.status(400).send({message: 'custome code exists!'});
+      }else{
+        newShortCode=inputCustomeCode;
       }
     }
 
-    //request will come here only if apikey exists
-    
       // const newShortCode=nanoid(8);
       const creatNewlShorlUrl=await prisma.urlshortener.create({
         data:{
@@ -101,11 +112,7 @@ module.exports.generateShortUrl = async (req, res) => {
 
       return res.status(201).json({ shortcode: newShortCode });
 
-    // }
-
-    
-
-    
+     
   } catch (error) {
     res.status(500).json({ message: "Error fetching URL", error });
   }

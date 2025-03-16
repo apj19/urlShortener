@@ -5,8 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
+  "jest": {
+  "setupFilesAfterEnv": ["./jest.setup.js"],
+  "testEnvironment": "node",
+  "testMatch": ["**/*.test.js"]
+},
   "prisma": {
     "seed": "node prisma/seed.js"
   },
