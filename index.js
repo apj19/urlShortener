@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser= require('body-parser');
 const app = express();
-
+const swaggerDocs = require('./swagger');
+// const swaggerDocs1 = require('./src/routes');
 
 
 const {authMiddleware}=require("./src/middleware/AuthMiddleware");
@@ -18,6 +19,8 @@ app.use('/shorten',authMiddleware,shortenRoute);
 const redirtRoute=require("./src/routes/redirectRoutes");
 app.use('/redirect',redirtRoute);
 
+//swager docs
+swaggerDocs(app, PORT);
 
 const server=app.listen(PORT, () => {
     console.log(`Server running at: http://localhost:${PORT}/`);

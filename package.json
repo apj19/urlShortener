@@ -8,10 +8,14 @@
     "test": "jest --runInBand"
   },
   "jest": {
-  "setupFilesAfterEnv": ["./jest.setup.js"],
-  "testEnvironment": "node",
-  "testMatch": ["**/*.test.js"]
-},
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ],
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/*.test.js"
+    ]
+  },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
@@ -24,6 +28,8 @@
     "express": "^4.21.2",
     "nanoid": "^3.3.9",
     "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
