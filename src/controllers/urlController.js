@@ -5,7 +5,7 @@ const { nanoid } = require("nanoid");
 const {z}= require("zod");
 
 
-const {createShortCodeSchema}=require("../zodschemas/createShorturl")
+const {createShortCodeSchema,deleteShorlUrl,updateShortUrl}=require("../zodschemas/zodSchemas")
 
 module.exports.getUrl = async (req, res) => {
   try {
@@ -160,21 +160,27 @@ module.exports.generateBulkShortUrl= async (req,res)=>{
 
 module.exports.deleteShortUrl = async (req, res) => {
   try {
-    let inputshortcode=req.body.shortCode;
-    if(!inputshortcode){
-            return res.status(400).send({
-              success: 'false',
-              message: 'ShortCode requried'
-            });
+    //input validation
+    const inputValidation=deleteShorlUrl.safeParse(req.body);
+    if(!inputValidation.success){
+      return res.status(400).send({message: 'Bad Input!!Please check documentaion'});
     }
+
+    let inputshortcode=req.body.shortCode;
+    // if(!inputshortcode){
+    //         return res.status(400).send({
+    //           success: 'false',
+    //           message: 'ShortCode requried'
+    //         });
+    // }
     //check if that url existe in our system
 
     const existsUrl = await prisma.urlshortener.findUnique({
       where: {shorturl:inputshortcode,
         user_id:req.userIdFromAuth},
     });
-    // console.log(existsUrl);
-    if(!existsUrl || existsUrl.isdeleted){
+   
+    if(!existsUrl){
       return res.status(404).json({ message: "ShortCode not found here" });
     }
   
@@ -210,9 +216,12 @@ module.exports.updateShrtCodeFields = async (req, res) => {
     }
 
     //expiary date check
+    const input_validation=updateShortUrl.safeParse(req.body);
+    if(!input_validation.success){
+      return res.status(400).send({message: 'Bad Input!!Please check documentaion'});
+    }
 
     
- 
     const existsUrl = await prisma.urlshortener.findUnique({
       where: {shorturl:inputshortcode,
         user_id:req.userIdFromAuth},
@@ -222,53 +231,26 @@ module.exports.updateShrtCodeFields = async (req, res) => {
       return res.status(404).json({ message: "ShortCode not found here" });
     }
 
-    // //checking if user provided both expier date and passwod
-    // if(req.body.expiryDate && req.body.password){
-
-    // }
-
-
-    if(req.body.expiryDate){
-
-      const date = z.string().date();
-      const dateValidation=date.safeParse(req.body.expiryDate)
-
-      if(!dateValidation.success){
-        return res.status(400).send({ message: 'Date format is yyyy-mm-dd'});
-      }
+    //now doing the updates
+    const dataToUpdate = {};
+    if (req.body.expiry){ 
+      dataToUpdate.expiry_date = new Date(req.body.expiry);
+    }
+    if (req.body.password){ 
+      dataToUpdate.password = req.body.password;
+    }
+    dataToUpdate.isdeleted=false;
+    // console.log(dataToUpdate);
 
       const updateExpiry = await prisma.urlshortener.update({
         where: {
           id: existsUrl.id, 
         },
-        data:{
-          expiry_date:new Date(req.body.expiryDate),
-          isdeleted:false
-        },
+        data:dataToUpdate
       });
-    }
-
     
 
-    if(req.body.password){
-      //password check
-      const shortCodePassword = z.string().min(10);
-      const shortCodePasswordValidation=shortCodePassword.safeParse(req.body.password);
-
-      if(!shortCodePasswordValidation.success){
-        return res.status(400).send({ message: 'password must be 10 charters'});
-      }
-
-      const updatePassword = await prisma.urlshortener.update({
-        where: {
-          id: existsUrl.id, 
-        },
-        data:{
-          password:req.body.password
-        },
-      });
-    }
-
+    
     return res.status(200).json({ message: "ShortCode Updated" });
  
   } catch (error) {

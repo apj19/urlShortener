@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser= require('body-parser');
 const app = express();
 
+
+
 const {authMiddleware}=require("./src/middleware/AuthMiddleware");
 
 app.use(bodyParser.json());
