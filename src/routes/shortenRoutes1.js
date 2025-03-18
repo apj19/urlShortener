@@ -31,11 +31,14 @@ const {authrization}=require("../middleware/authorization");
  *               longUrl:
  *                 type: string
  *               expiry:
- *                 type: date
+ *                 type: yyyy-mm-dd
+ *                 default: null
  *               customerCode:
  *                 type: string
+ *                 default: null
  *               password:
  *                 type: string
+ *                 default: null
  *     responses:
  *       201:
  *         description: The Short code create
@@ -50,6 +53,41 @@ const {authrization}=require("../middleware/authorization");
 router.post('/', generateShortUrl);
 //bulk creation
 
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * /shorten/bulk:
+ *   post:
+ *     summary: Create a bulk Short url
+ *     security:
+ *       - bearerAuth: []  
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               longUrl:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: List of tags to add
+ *     responses:
+ *       201:
+ *         description: The Short code create
+ *       500:
+ *         description: Some server error
+ *       400:
+ *         description: Bad request 
+ *       401:
+ *         description: Unauthorized
+ */
 router.post('/bulk',authrization, generateBulkShortUrl);
 
 
@@ -101,18 +139,29 @@ router.delete('/', deleteShortUrl);
  *   patch:
  *     summary: Update shortUrl
  *     security:
- *       - bearerAuth: []  
+ *       - bearerAuth: [] 
+ *     parameters:
+ *       - in: path
+ *         name: shortcode
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ShortUrl that need to be updated
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: 
+ *               - expiry
  *             properties:
  *               expiry:
  *                 type: string
+ *                 default: null
  *               password:
  *                 type: string
+ *                 default: null
  *     responses:
  *       200:
  *         description: The Short code Updated

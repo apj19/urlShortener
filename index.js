@@ -3,6 +3,10 @@ const bodyParser= require('body-parser');
 const app = express();
 const swaggerDocs = require('./swagger');
 // const swaggerDocs1 = require('./src/routes');
+// const cors = require('cors');
+
+// Enable CORS for all routes
+// app.use(cors());
 
 
 const {authMiddleware}=require("./src/middleware/AuthMiddleware");

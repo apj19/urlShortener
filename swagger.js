@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'User CRUD API',
+      title: 'Url Shortener',
       version: '1.0.0',
-      description: 'A simple CRUD API for managing users',
+      description: 'Short your URL',
     },
     servers: [
       {
