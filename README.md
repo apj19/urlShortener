@@ -2,89 +2,26 @@
 
 ## Project Setup
 
-1. To install dependencies, move to folder and Run `npm i`
-2. To setup local Sqllit Run
-   `npx prisma migrate dev --name init `
+1. clone the repo
+2. run command ```git checkout newA2 ```
+
+3. To install dependencies,Run `npm i`
+4. Create .env file put following files
+   DATABASE_URL="yourPostgressurl"
+
+   TEST_USER1_API_KEY="testapikeyapjcr"--keep this for testing
+
+   TEST_USER2_API_KEY="testapikey2sdfhsgsg"----keep this for testing
+
 3. To test api helth run `npm test `
 4. To start server Run ` npm start`
 5. To run load test please instat k6 on your systme
    the run `k6 run loadTest\simpletest.js `
 
-# load test Results
-
-For testing purpose tooke 30s as base time and will increase user count.
-
-Q3. For 10 users
-![Alt text](./src/assets/with10Users.PNG)
-
-Q4. Increased users
-
-| User | Avg    | P(50)  | p(90)  | p(95)  | p(99)   |
-| ---- | ------ | ------ | ------ | ------ | ------- |
-| 10   | 10 ms  | 11 ms  | 16 ms  | 21 ms  | 43 ms   |
-| 100  | 74 ms  | 32 ms  | 200 ms | 282 ms | 537 ms  |
-| 200  | 300 ms | 152 ms | 152 ms | 1.23 s | 1.91s   |
-| 500  | 1.26 s | 987 ms | 2.68s  | 3s     | 4.07sec |
-| 1000 | 4.2 s  | 2.29s  | 15.2s  | 18s    | 16s     |
-
-## ORM
-
-1.  orm quries are shorte and easy to write
-2.  It prevent any sql injecting techiniques
-3.  it has database migration so easy to change database
-4.  easy to write complex quries like joins
-
-Q7. if same longurl sent again it will send pervious code only will not generate new one
-
-Q8.
-it will give 404 error
-
-q9
-delete request on /shorten
-
 # Modification
 ## A2
- ###  branch-- main 
+ ###  branch-- newA2 
 npx prisma db seed
 
-## Q1. 
-adding index on create date column so frquent fetching will be fast;
-```
-select longurl from urlshortener
-order by created_at desc
-limit 10;
 
-```
-## Q2. 
-it should return 404 error, test case added
-
-## Q3.
-```
-select * from urlshortener
-order by counter desc,last_accessed_at desc
-limit 10;
-```
-
-## Q4.
-```
-select longurl, count(shorturl) as cnt from urlshortener
-group by longurl
-order by cnt desc
-limit 10;
-```
-## Q5 done test remaing cases remaning
-## Q6
-## Q7
-
-## Q8 code done test remains
-
-## Q9 optional shortcode code done test remains
-
-## Q10 bulk endpoint done
-
-## Q11, Q12 Done  test remains
-
-## Q13 Done  test remains
-
-## Q14 Done  test remains
 
