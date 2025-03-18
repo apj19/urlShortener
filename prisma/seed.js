@@ -14,7 +14,7 @@ async function main() {
       data:[
         {email:"default@gmail.com",name:"default",api_key:"testapikeysdfhsgsg"},
         {email:"default1@gmail.com",name:"default1",api_key:"testapikey2sdfhsgsg"},
-        {email:"apjcr@gmail.com",name:"APJCR",api_key:"testapikeyapjcr",tier:ENTERTPRISE}
+        {email:"apjcr@gmail.com",name:"APJCR",api_key:"testapikeyapjcr",tier:'ENTERTPRISE'}
       ]
      })
 
