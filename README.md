@@ -3,7 +3,7 @@
 ## Project Setup
 
 1. clone the repo
-2. run command ```git checkout newA2 ```
+2. run command ```git checkout middlware ```
 
 3. To install dependencies,Run `npm i`
 4. Create .env file put following Details\
