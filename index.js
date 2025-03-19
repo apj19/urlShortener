@@ -11,6 +11,7 @@ const swaggerDocs = require('./swagger');
 
 const {logging}=require("./src/middleware/logging");
 const {blacklistmiddleware}=require("./src/middleware/blacklist")
+const {responsetime}=require("./src/middleware/responsetime")
 
 const {authMiddleware}=require("./src/middleware/AuthMiddleware");
 
@@ -18,10 +19,10 @@ app.use(bodyParser.json());
 const PORT = 3000;
 
 //logging middlware
-app.use(logging);
+app.use(logging,blacklistmiddleware,responsetime);
 
-//checking blacklist
-app.use(blacklistmiddleware);
+// //checking blacklist
+// app.use(blacklistmiddleware);
 
 const bascicRoute=require("./src/routes/basicRoutes");
 app.use('/health',bascicRoute);
