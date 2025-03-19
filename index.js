@@ -9,10 +9,15 @@ const swaggerDocs = require('./swagger');
 // app.use(cors());
 
 
+const {logging}=require("./src/middleware/logging");
+
 const {authMiddleware}=require("./src/middleware/AuthMiddleware");
 
 app.use(bodyParser.json());
 const PORT = 3000;
+
+//logging middlware
+app.use(logging);
 
 const bascicRoute=require("./src/routes/basicRoutes");
 app.use('/health',bascicRoute);
