@@ -46,5 +46,17 @@
 - `POST /shorten` now requires authentication
 - `DELETE /shorten` now requires authentication
 
+## Migration 
 
+- Effective Date: May 1, 2025
+- API Version: v2.0.0
+
+1. Overview  <br>
+Now `POST /shorten` and `DELETE /shorten` need authentication
+
+2. Migraton steps <br>
+    - Register on webiste
+    - Get Tokey/key from Website
+    - Select `Authorization` header
+    - add `Bearer yourKey`
 
