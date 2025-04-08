@@ -4,6 +4,7 @@ const { nanoid } = require("nanoid");
 
 const {z}= require("zod");
 
+const {redisClient}= require("../helpers/redisClient")
 
 const {createShortCodeSchema,deleteShorlUrl,updateShortUrl}=require("../zodschemas/zodSchemas")
 
@@ -50,6 +51,61 @@ module.exports.getUrl = async (req, res) => {
     });
 
     return res.redirect(url.longurl);
+    //ading counter and last access date
+    // console.log(url.id);
+    
+
+
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching URL", error });
+  }
+};
+
+module.exports.lookUpGetUrl = async (req, res) => {
+  try {
+    let shortCode=req.query.code;
+    if(!shortCode){
+      return res.status(400).send({
+        success: 'false',
+        message: 'shortcode requried'
+      });
+    }
+
+    const url = await prisma.urlshortener.findUnique({
+      where: { shorturl:shortCode },
+    });
+
+    if (!url) {
+      return res.status(404).json({ message: "URL not found" });
+    }
+
+    if (url.isdeleted) {
+      return res.status(404).json({ message: "URL not found" });
+    }
+
+    if (url.expiry_date && url.expiry_date <= Date.now()) {
+      return res.status(404).json({ message: "URL not found" });
+    }
+    const userApiKey = req.headers["authorization"]?.split("Bearer ")[1];
+
+    if(url.password && userApiKey!=url.password){
+      return res.status(401).json({ message: "Unauthorized!!!!" });
+
+    }
+
+    const add=await prisma.urlshortener.update({
+      where:{id:url.id},
+      data:{
+        counter:{
+          increment:1
+        },
+        last_accessed_at: new Date()
+      }
+    });
+    // (url.longurl)
+     await redisClient.set(shortCode,url.longurl);
+     res.setHeader('Cache-Control', 'public, max-age=600');
+    return res.status(200).json({longurl:url.longurl});
     //ading counter and last access date
     // console.log(url.id);
     

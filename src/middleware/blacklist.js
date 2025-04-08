@@ -5,6 +5,7 @@ const fs = require('fs').promises;
 
 let blacklistSet = new Set();
 
+
 // Load blacklist keys from file into memory
 async function loadBlacklist() {
   try {
@@ -16,8 +17,8 @@ async function loadBlacklist() {
     console.error(`[Blacklist] Error loading blacklist: ${error.message}`);
   }
 }
-
-loadBlacklist();
+//To work balcklist file uncomment function call
+//loadBlacklist();
 
 module.exports.blacklistmiddleware = async function(req , res, next){
 
