@@ -306,7 +306,7 @@ module.exports.updateShrtCodeFields = async (req, res) => {
       });
     
 
-    
+    await redisClient.del(inputshortcode);
     return res.status(200).json({ message: "ShortCode Updated" });
  
   } catch (error) {

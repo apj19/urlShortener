@@ -17,7 +17,7 @@ const {authMiddleware}=require("./src/middleware/AuthMiddleware");
 
 const {cachingMiddlware}=require("./src/middleware/caching");
 
-
+const {ratelimit}= require("./src/middleware/ratelimit");
 app.use(bodyParser.json());
 const PORT = 3000;
 
@@ -39,7 +39,8 @@ app.use('/redirect',redirtRoute);
 //lookup route to check about caching
 const lookupRoute=require("./src/routes/lookupRoutes");
 // app.use('/lookup',lookupRoute);
-app.use('/lookup',cachingMiddlware,lookupRoute);
+app.set('trust proxy', true);//for postman ip
+app.use('/lookup',ratelimit,cachingMiddlware,lookupRoute);
 
 
 //swager docs
