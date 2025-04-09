@@ -2,7 +2,7 @@
 const {redisClient}= require("../helpers/redisClient");
 
 const WINDOW_SECONDS = 10;
-const MAX_REQUESTS = 1;
+const MAX_REQUESTS = 5;
 
 module.exports.ratelimit = async function(req , res, next){
 

@@ -66,3 +66,7 @@ describe("Should redirect with 404", () => {
   
   });
 });
+
+
+
+//Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
